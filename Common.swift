@@ -113,4 +113,9 @@ func cellIdentify(cellClass : AnyClass) -> String {
     
 }
 
-        
+//MARK: - 获取版本号
+func getCurrentIOS() -> CGFloat
+{
+    return CGFloat(Float(UIDevice.current.systemVersion)!)
+    
+}
