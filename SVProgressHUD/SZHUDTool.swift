@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class SZHUDTool: NSObject {
 
@@ -28,9 +29,9 @@ extension SZHUDTool {
 }
 
 func SZHUDDismiss() {
-//    if SVProgressHUD.isVisible() {
+    if SVProgressHUD.isVisible() {
     SVProgressHUD.dismiss()
-//    }
+    }
 }
 
 fileprivate func SZHUDLoading(_ message: String) {
@@ -52,7 +53,7 @@ enum SZHUDType {
     case error,info,success,loading
 }
 
-func SZHUD(_ message: String, type: SZHUDType, time: TimeInterval?) {
+func SZHUD(_ message: String, type: SZHUDType, time: TimeInterval = 1, callBack: (() -> ())?) {
     
     switch type {
     case .error:
@@ -66,11 +67,14 @@ func SZHUD(_ message: String, type: SZHUDType, time: TimeInterval?) {
     
     }
     
-    if let timeL = time {
-        _ = delay(timeL, task: { 
+//    if let timeL = time {
+    if type != .loading {
+        _ = delay(time, task: {
             SZHUDDismiss()
+            callBack?()
         })
     }
+//    }
     
 }
 

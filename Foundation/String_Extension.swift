@@ -29,8 +29,8 @@ extension String {
     /// - Returns: 获取的字符串
     func substring(star: Int, end: Int) -> String {
         let new = self[self.startIndex.advance(star, for: self)..<self.startIndex.advance(end, for: self)]
-        
-        return new
+        let newStr = String(new)
+        return newStr
     }
 }
 

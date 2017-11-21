@@ -14,7 +14,7 @@ extension CGRect {
 }
 
 func CGRectAdjust(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat) -> CGRect {
-    return  CGRect(x: adjustSize(attribute: x), y: adjustSize(attribute: y), width: adjustSize(attribute: width), height: adjustSize(attribute: height))
+    return  CGRect(x: fit(x), y: fit(y), width: fit(width), height: fit(height))
 }
 
 extension UIView {

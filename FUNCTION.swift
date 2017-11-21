@@ -9,15 +9,10 @@
 import Foundation
 import UIKit
 
-public func SNLog<T>(_ message: T, file: String = #file, function: String = #function, line: Int = #line) {
-    
-    var fileName = file as NSString
-    
-    fileName = fileName.lastPathComponent as NSString
-    print("[\(fileName)--\(function)--\(line) : \(message)]")
-}
 
-
+/// MARK: - 获取当前控制器
+///
+/// - Returns: 当前VC
 public func getCurrentVC() -> UIViewController {
     
     var result:UIViewController?
@@ -50,7 +45,7 @@ public func getCurrentVC() -> UIViewController {
     return result!
 }
 
-
+// MARK: - 字典转JSON
 func dic2Json(dictionary: Dictionary<String,String>) {
     
     
@@ -61,7 +56,7 @@ func dic2Json(dictionary: Dictionary<String,String>) {
     SNLog(result)
 }
 
-
+// MARK: - 模型转字典
 func modelToDic<T>(model:T) -> Dictionary<String,String> {
     
     
@@ -88,6 +83,7 @@ func modelToDic<T>(model:T) -> Dictionary<String,String> {
     return resultDic
 }
 
+// MARK: - 字典转JSON
 func dic2JSONStr(dictionary:Dictionary<String,Any>) -> String {
     
     var jsonStr = ""
@@ -105,11 +101,48 @@ func dic2JSONStr(dictionary:Dictionary<String,Any>) -> String {
     return jsonStr
 }
 
+// MARK: - String 转 Double
 func text2Doubel(_ text: String) -> Double {
     
-    return text == "" ? 0.0 : Double(text)!
+    let n = NumberFormatter().number(from: text)
+    if let num = n {
+    let totalPrice = Double(num)
+    return totalPrice
+    } else {
+        return 0.00
+    }
 }
 
+// MARK: - String 转 Int
+func text2Int(_ text: String) -> Int {
+
+
+//    if let i = Int(text) {
+//        return i
+//    } else {
+//        return 0
+//    }
+    let n = NumberFormatter().number(from: text)
+     if let num = n {
+    let totalPrice = Int(num)
+    return totalPrice
+     } else {
+        return 0
+    }
+}
+
+// MARK: - String 转 CGFloat
+func text2CGFloat(_ text: String) -> CGFloat {
+    let n = NumberFormatter().number(from: text)
+    if let num = n {
+    let totalPrice = CGFloat(num)
+    return totalPrice
+    } else {
+        return 0.00
+    }
+}
+
+// MARK: - 验证是否是数字
 func validNumber(text: String) -> Bool {
     
     let number = "^[0-9]+$"
@@ -123,6 +156,7 @@ func validNumber(text: String) -> Bool {
     return result
 }
 
+// MARK: - 验证是否都是大写
 func validCharacter(text: String) -> Bool {
     
     let character = "^[A-Z]+$"
@@ -136,10 +170,28 @@ func validCharacter(text: String) -> Bool {
     return result
 }
 
+/// 获取当前时间
+///
+/// - Parameter format: 时间格式
+/// - Returns: 当前时间
 func getCurrentTime(format: String) -> String {
     let dateformatter = DateFormatter()
     dateformatter.dateFormat = format
     let currentDate = Date()
     let date = dateformatter.string(from: currentDate)
     return date
+}
+
+
+/// 拨打电话
+///
+/// - Parameter phone: 电话号码
+func callPhone(phone: String) {
+    
+    if #available(iOS 10.0, *) { //10.3.1  10.3
+        UIApplication.shared.open(URL(string: "telprompt://\(phone)")!, options: [:], completionHandler: nil)
+        
+    } else {
+        UIApplication.shared.openURL(URL(string: "telprompt://\(phone)")!)// Fallback on earlier versions
+    }
 }

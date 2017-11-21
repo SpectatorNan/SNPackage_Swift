@@ -17,57 +17,49 @@ let ScreenW = UIScreen.main.bounds.width
 
 let ScreenH = UIScreen.main.bounds.height
 
-//时间设置
-let SZTimeSetting = "SZTimeSetting"
-//上传设置
-//let SZUploadSetting = "SZUploadSetting"
-//件数设置
-let SZCountSetting = "SZCountSetting"
-
-//基础价格
-
-//收件网点
-let SZReceiveNetpotSetting = "SZReceiveNetpotSetting"
-//到件网点
-let SZArriveNetpotSetting = "SZArriveNetpotSetting"
-//快递单价
-let SZChargeSetting = "SZChargeSetting"
+func fit(_ attribute: CGFloat) -> CGFloat {
+    return adjustSizeWithUiDesign(attribute: attribute, UiDesignWidth: 750.0)
+}
 
 
-let SZPrintReceiveLable = "SZReceiveLabel"
-let SZPrintPrice = "SZPrintPrice"
+let IS_IPONE = UIDevice.current.model == "iPhone"
+//用于屏幕设配 等比例方法缩小
+fileprivate func adjustSize(attribute: CGFloat) -> CGFloat {
+    
+    
+    precondition(IS_IPONE, "this is not iphone,adjust method can not be used")
+    
+    var result : CGFloat = 0.0
+    switch ScreenW {
+    case 414:
+        result = attribute
+    case 375:
+        result = attribute/1.104
+        
+    case 768:
+        result = attribute * 1.85507
+    default:
+        result = attribute/1.29375
+    }
+    return result
+}
 
 
-//目标城市
-let SZAimCitySetting = "SZAimCitySetting"
-//终端网点
-let SZTermianlPotSetting = "SZTermianlPotSetting"
-//收货人电话
-let SZReceivePhone = "SZReceivePhone"
-//收货人姓名
-let SZReceiveName = "SZReceiveName"
-//收获地址
-let SZReceiveAddress = "SZReceiveAddress"
-//运单备注
-let SZWayBillTip = "SZWayBillTip"
-
-//结算方式
-let SZPayMehtod = createBillDefaultClearMethodConst//createBillDefaultClearMethodConst
-
-let SZSettingDict = ["时间设置":SZTimeSetting,
-                     "件数设置": SZCountSetting,
-                     "收件网点":SZReceiveNetpotSetting,
-                     "到件网点":SZArriveNetpotSetting,
-                     "快递单价":SZChargeSetting,
-                     "目的城市":SZAimCitySetting,
-                     "终端网点":SZTermianlPotSetting,
-                     "收货人电话":SZReceivePhone,
-                    "收货人姓名":SZReceiveName,
-                    "收货地址":SZReceiveAddress,
-                    "运单备注":SZWayBillTip,
-                    "结算方式":SZPayMehtod]
+//此方法基本不用,通过APPCommon中的adjustSizeAPP调用此方法
+func adjustSizeWithUiDesign(attribute: CGFloat,UiDesignWidth: CGFloat) -> CGFloat {
+    let rate = UiDesignWidth/414.0
+    
+    return adjustSize(attribute: attribute/rate)
+}
 
 
+public func SNLog<T>(_ message: T, file: String = #file, function: String = #function, line: Int = #line) {
+    
+    var fileName = file as NSString
+    
+    fileName = fileName.lastPathComponent as NSString
+    print("[\(fileName)--\(function)--\(line) : \(message)]")
+}
 
 func ZJLog<T>(messagr : T ,file : String = #file,function : String = #function, line : Int = #line  )
 {
@@ -79,33 +71,16 @@ func ZJLog<T>(messagr : T ,file : String = #file,function : String = #function, 
         print("<\(str2)--\(function)>[\(line)]:\(messagr)")
     #endif
 }
+
 func ColorRGB(red: CGFloat, green: CGFloat , blue: CGFloat ) -> UIColor {
     
     return ColorRGBA(red: red, green: green, blue: blue, alpha: 1.0)
 }
+
 func ColorRGBA(red: CGFloat, green: CGFloat , blue: CGFloat ,alpha: CGFloat) -> UIColor {
     let color = UIColor.init(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: alpha)
     
     return color
-}
-
-func adjustSize(attribute: CGFloat) -> CGFloat {
-    var result : CGFloat = 0.0
-    switch ScreenW {
-    case 414:
-        result = attribute
-   case 375:
-        result = attribute/1.104
-    default:
-        result = attribute/1.29375
-    }
-    return result
-}
-
-func adjustSizeWithUiDesign(attribute: CGFloat,UiDesignWidth: CGFloat) -> CGFloat {
-    let rate = UiDesignWidth/414.0
-    
-    return adjustSize(attribute: attribute/rate)
 }
 
 func cellIdentify(cellClass : AnyClass) -> String {
